@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block body_content %}
+<div class="p-5">
+    <form method="GET">
+        {% for sem in sem %}
+        <button type="submit" class="btn btn-primary" name="semester" value="{{sem.id}}">{{sem.title}}</button>
+        {% endfor %}
+    </form>
+
+
+    <hr>
+
+    {% if messages %}
+    {% for messages in messages %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        {{messages}}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endfor %}
+    {% endif %}
+
+    
+
+
+    {% if semester %}
+    <form method="POST">
+        {% csrf_token %}
+        
+        <h1>{{semester}}</h1>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Subject Code</th>
+                    <th scope="col">Subject Title</th>
+                    <th scope="col">Credit Hour</th>
+                    <th scope="col">Subject Mark</th>
+                </tr>
+            </thead>
+
+
+            
+            <tbody>
+                {% for subject in semester.semester_subject.all %}
+                <tr>
+                    <th scope="row">{{subject.code}}</th>
+                    <td>{{subject.title}}</td>
+                    <td>{{subject.credit}}</td>
+                    <td>
+
+                        <input type="number" name="subject_mark[]">
+
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+
+            {% if avarage_mark %}
+            <tbody class="table-dark">
+                <tr>
+                    <th scope="row">Total</th>
+                    <td>Your CGPA: {{gpa}}</td>
+                    <td>Avarage Mark: {{avarage_mark}}</td>
+                    <td>
+
+                        Your Point: {{point}}
+
+                    </td>
+                </tr>
+            </tbody>
+            {% endif %}
+
+        </table>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    {% endif %}
+
+</div>
+
+{% endblock body_content %}
